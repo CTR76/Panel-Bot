@@ -298,8 +298,8 @@ Nếu bạn muốn đóng góp hoặc phát triển thêm các tính năng cho A
       "users": [
         {
           "username": "admin",
-          "email": "trancuong2674@gmail.com",
-          "password": "cuongpanelbots2000@"
+          "email": "admin@gmail.com",
+          "password": "adminpanelbots2000@"
         }
       ]
     }
