@@ -1,4 +1,4 @@
-# AegisBot Orchestrator - Hệ Thống Quản Lý Bot Discord Tự Phục Hồi
+# AegisBot Orchestrator - Hệ Thống Quản Lý Bot Song Song
 
 **AegisBot Orchestrator** là một hệ thống máy chủ quản lý đa tiến trình bằng Python (sử dụng FastAPI làm backend và Vanilla CSS/JS làm giao diện). Hệ thống được thiết kế đặc biệt nhằm chạy nhiều bot Discord một cách độc lập, cô lập và **tuyệt đối không bị sập**, tối ưu hóa triệt để cho các máy chủ VPS cấu hình nhẹ như **Wispbyte Special Tier 2 (1GB RAM, 10GB NVMe)**.
 
