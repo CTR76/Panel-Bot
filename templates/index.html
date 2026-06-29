@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Bot Manager - Premium Dashboard</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=1.0.17">
+</head>
+<body>
+    <div class="app-container">
+        <!-- TOP HEADER -->
+        <header class="main-header">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fa-solid fa-server"></i></div>
+                <div class="logo-text">
+                    <h1>AegisBot</h1>
+                    <span>Discord Bot Orchestrator</span>
+                </div>
+            </div>
+            
+            <!-- System Stats Widget -->
+            <div class="system-stats-widget" style="display: flex; align-items: center; gap: 1rem;">
+                <div class="stat-card" id="cpu-widget">
+                    <span class="stat-label"><i class="fa-solid fa-microchip"></i> CPU</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <span class="stat-value">0%</span>
+                </div>
+                <div class="stat-card" id="ram-widget">
+                    <span class="stat-label"><i class="fa-solid fa-memory"></i> RAM</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <span class="stat-value">0 / 0 GB (0%)</span>
+                </div>
+                <div class="stat-card" id="disk-widget">
+                    <span class="stat-label"><i class="fa-solid fa-hard-drive"></i> DISK</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <span class="stat-value">0 / 0 GB (0%)</span>
+                </div>
+                
+                <!-- Nút Đăng Xuất -->
+                <a href="/api/auth/logout" class="btn btn-danger-outline" style="padding: 0.45rem 0.85rem; border-radius: 8px; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem; text-decoration: none; border-color: rgba(239, 68, 68, 0.3); margin-left: 0.5rem; white-space: nowrap;" title="Đăng xuất khỏi hệ thống">
+                    <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                </a>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <div class="main-layout">
+            <!-- SIDEBAR: BOTS LIST -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Danh sách Bot</h3>
+                    <button class="btn btn-primary btn-sm" id="btn-add-bot-trigger">
+                        <i class="fa-solid fa-plus"></i> Thêm Bot
+                    </button>
+                </div>
+                <div class="sidebar-search">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="bot-search" placeholder="Tìm kiếm bot (Tên hoặc ID)...">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+                <div class="bot-list-container" id="bot-list">
+                    <!-- Dynamic bot list items will go here -->
+                    <div class="loading-placeholder">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách...
+                    </div>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT AREA -->
+            <main class="content-area">
+                <!-- VIEW 1: WELCOME / SYSTEM DASHBOARD -->
+                <section id="view-dashboard" class="content-view active">
+                    <div class="welcome-card">
+                        <h2>Chào mừng bạn đến với AegisBot Orchestrator</h2>
+                        <p>Hệ thống máy chủ quản lý đa tiến trình chuyên dụng, tối ưu hóa đặc biệt cho VPS cấu hình nhẹ. AegisBot tự động cô lập môi trường của từng bot và tự động sửa lỗi thiếu thư viện runtime mà không làm gián đoạn hệ thống.</p>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <h4>Chống sập (Resiliency)</h4>
+                            <p>Nếu bot bị crash do lỗi code hoặc mất kết nối mạng, AegisBot sẽ tự động khởi động lại sau 5 giây.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon"><i class="fa-solid fa-cubes"></i></div>
+                            <h4>Tự động sửa lỗi thiếu thư viện</h4>
+                            <p>Tự động quét code nguồn bằng AST và cài đặt gói PyPI còn thiếu. Nếu phát hiện lỗi ModuleNotFound lúc chạy, hệ thống sẽ tự tải và restart.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon"><i class="fa-solid fa-gauge-high"></i></div>
+                            <h4>Tối ưu hóa RAM VPS 1GB</h4>
+                            <p>Hàng đợi cài đặt Pip chạy tuần tự giúp máy chủ không bao giờ bị quá tải RAM khi cài thư viện.</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-box">
+                        <h3><i class="fa-solid fa-circle-info"></i> Hướng dẫn nhanh</h3>
+                        <ol>
+                            <li>Bấm nút <strong>"Thêm Bot"</strong> ở góc trái.</li>
+                            <li>Đặt ID (ví dụ: <code>my_bot</code>), dán mã nguồn Python của bot và thiết lập cấu hình <code>.env</code> (chứa TOKEN của bot).</li>
+                            <li>Bấm <strong>"Lưu Bot"</strong>. Hệ thống sẽ tự tạo Virtual Environment và cài đặt các thư viện cần thiết.</li>
+                            <li>Bấm <strong>"Chạy"</strong> và theo dõi log hoạt động thời gian thực tại màn hình Console.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: BOT DETAIL & CONSOLE -->
+                <section id="view-bot-detail" class="content-view">
+                    <div class="bot-detail-header">
+                        <div class="bot-info-title">
+                            <button class="btn btn-secondary btn-sm" id="btn-back-to-dashboard" style="margin-right: 0.5rem;"><i class="fa-solid fa-arrow-left"></i> Quay lại</button>
+                            <button class="btn btn-secondary btn-sm" id="btn-lock-bot" style="display: none; margin-right: 0.5rem; border-color: rgba(239, 68, 68, 0.2); color: #f87171;" title="Khóa truy cập bot"><i class="fa-solid fa-lock"></i> Khóa lại</button>
+                            <h2 id="detail-bot-name">Tên Bot</h2>
+                            <span class="status-badge" id="detail-bot-status">Đang dừng</span>
+                        </div>
+                        <div class="bot-actions">
+                            <button class="btn btn-success" id="btn-start"><i class="fa-solid fa-play"></i> Chạy</button>
+                            <button class="btn btn-danger" id="btn-stop"><i class="fa-solid fa-stop"></i> Dừng</button>
+                            <button class="btn btn-warning" id="btn-restart"><i class="fa-solid fa-rotate-right"></i> Restart</button>
+                            <button class="btn btn-secondary" id="btn-edit"><i class="fa-solid fa-pen-to-square"></i> Sửa Code</button>
+                            <button class="btn btn-danger-outline" id="btn-delete"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                        </div>
+                    </div>
+
+                    <!-- Tabs điều hướng -->
+                    <div class="bot-tabs">
+                        <button class="tab-btn active" data-tab="console"><i class="fa-solid fa-terminal"></i> Live Console</button>
+                        <button class="tab-btn" data-tab="files"><i class="fa-solid fa-folder-open"></i> Quản lý File</button>
+                    </div>
+
+                    <!-- Tab 1: Console -->
+                    <div id="tab-console" class="tab-content active">
+                        <div class="console-wrapper">
+                            <div class="console-header">
+                                <span class="console-title"><i class="fa-solid fa-terminal"></i> Live Console Log</span>
+                                <div class="console-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <button class="btn-icon" id="btn-clear-console" title="Xóa màn hình"><i class="fa-solid fa-ban"></i></button>
+                                    <button class="btn-icon" id="btn-clear-server-log" title="Dọn sạch tệp tin Log trên Server (Chỉ khi bot dừng)"><i class="fa-solid fa-trash-can"></i></button>
+                                    <button class="btn-icon active" id="btn-autoscroll" title="Tự động cuộn xuống"><i class="fa-solid fa-angles-down"></i></button>
+                                </div>
+                            </div>
+                            <div class="console-body" id="console-output">
+                                <!-- Terminal logs stream here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: File Manager -->
+                    <div id="tab-files" class="tab-content">
+                        <div class="file-manager-wrapper">
+                            <div class="file-manager-header">
+                                <div class="breadcrumbs" id="file-breadcrumbs">
+                                    <!-- Breadcrumbs will stream here -->
+                                </div>
+                                <div class="file-actions">
+                                    <button class="btn btn-secondary btn-sm" id="btn-file-new-file"><i class="fa-solid fa-file-circle-plus"></i> Tạo File</button>
+                                    <button class="btn btn-secondary btn-sm" id="btn-file-new-dir"><i class="fa-solid fa-folder-plus"></i> Tạo Thư mục</button>
+                                    <button class="btn btn-primary btn-sm" id="btn-file-upload-trigger"><i class="fa-solid fa-file-arrow-up"></i> Tải File</button>
+                                    <input type="file" id="file-upload-input" multiple style="display: none;">
+                                    <button class="btn btn-primary btn-sm" id="btn-file-upload-dir-trigger"><i class="fa-solid fa-folder-open"></i> Tải Thư mục</button>
+                                    <input type="file" id="file-upload-dir-input" webkitdirectory directory multiple style="display: none;">
+                                    <button class="btn btn-secondary-outline btn-sm" id="btn-file-refresh"><i class="fa-solid fa-rotate"></i> Làm mới</button>
+                                </div>
+                            </div>
+                            <!-- Thanh công cụ tìm kiếm và sắp xếp file -->
+                            <div class="file-manager-toolbar" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.01); border-bottom: 1px solid var(--color-border); gap: 1rem; flex-wrap: wrap;">
+                                <div class="file-search-wrapper" style="position: relative; flex: 1; min-width: 200px; max-width: 320px;">
+                                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); font-size: 0.8rem;"></i>
+                                    <input type="text" id="file-search" placeholder="Tìm kiếm file/thư mục..." style="width: 100%; padding: 0.4rem 0.8rem 0.4rem 2.2rem; font-size: 0.8rem; border-radius: 8px; border: 1px solid var(--color-border); background: rgba(0, 0, 0, 0.2); color: var(--color-text-main); outline: none; transition: border-color 0.2s;">
+                                </div>
+                                
+                                <!-- Thanh hành động hàng loạt (chỉ hiện khi chọn nhiều file) -->
+                                <div id="file-bulk-actions" style="display: none; align-items: center; gap: 0.75rem; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.25); padding: 0.35rem 0.8rem; border-radius: 8px; font-size: 0.8rem; color: #a5b4fc; flex-wrap: wrap;">
+                                    <span>Đã chọn <strong id="bulk-select-count">0</strong> mục</span>
+                                    <button type="button" class="btn btn-primary btn-sm" id="btn-bulk-download" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 6px;" title="Tải về máy"><i class="fa-solid fa-download"></i> Tải về</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" id="btn-bulk-move" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 6px;" title="Di chuyển các mục đã chọn"><i class="fa-solid fa-arrows-up-down-left-right"></i> Di chuyển</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" id="btn-bulk-duplicate" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 6px;" title="Nhân bản (Sao chép) các mục đã chọn"><i class="fa-regular fa-copy"></i> Nhân bản</button>
+                                    <button type="button" class="btn btn-danger btn-sm" id="btn-bulk-delete" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 6px;" title="Xóa các mục đã chọn"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                                </div>
+                                
+                                <div class="file-sort-wrapper" style="display: flex; align-items: center; gap: 0.5rem; margin-left: auto;">
+                                    <span style="font-size: 0.8rem; color: var(--color-text-muted);"><i class="fa-solid fa-arrow-down-a-z"></i> Sắp xếp:</span>
+                                    <select id="file-sort-mode" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 8px; border: 1px solid var(--color-border); background: rgba(0, 0, 0, 0.2); color: var(--color-text-main); cursor: pointer; outline: none;">
+                                        <option value="name_asc">Tên (A-Z)</option>
+                                        <option value="name_desc">Tên (Z-A)</option>
+                                        <option value="size_asc">Dung lượng (Nhỏ nhất)</option>
+                                        <option value="size_desc">Dung lượng (Lớn nhất)</option>
+                                        <option value="time_desc">Thời gian sửa (Mới nhất)</option>
+                                        <option value="time_asc">Thời gian sửa (Cũ nhất)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="file-list-container">
+                                <table class="file-list-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px; text-align: center;"><input type="checkbox" id="chk-select-all" style="cursor: pointer;"></th>
+                                            <th>Tên</th>
+                                            <th>Dung lượng</th>
+                                            <th>Thời gian sửa</th>
+                                            <th style="text-align: right; width: 220px;">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="file-list-body">
+                                        <!-- File list will stream here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 3: CREATE / EDIT BOT FORM -->
+                <section id="view-bot-form" class="content-view">
+                    <div class="form-header">
+                        <h2 id="form-title">Thêm Bot Mới</h2>
+                        <button class="btn btn-secondary btn-sm" id="btn-cancel-form"><i class="fa-solid fa-arrow-left"></i> Quay lại</button>
+                    </div>
+
+                    <form id="bot-config-form" class="bot-form" style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
+                        <div class="form-row-double">
+                            <div class="form-group">
+                                <label for="bot-id">Mã ID viết liền (Dùng làm tên thư mục, không dấu/khoảng trắng) <span class="required">*</span></label>
+                                <input type="text" id="bot-id" placeholder="ví dụ: bot_nhac, bot-moderator" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bot-name">Tên hiển thị hiển thị trên Web <span class="required">*</span></label>
+                                <input type="text" id="bot-name" placeholder="ví dụ: Bot Nhạc Remix" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row-double">
+                            <div class="form-group">
+                                <label for="bot-entrypoint">Tệp chạy chính mặc định <span class="required">*</span></label>
+                                <span class="label-hint">Tệp tin Python chính để khởi động bot (Ví dụ: <code>bot.py</code> hoặc <code>main.py</code>)</span>
+                                <input type="text" id="bot-entrypoint" placeholder="bot.py" value="bot.py" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bot-password">Mật khẩu truy cập Bot (Tùy chọn)</label>
+                                <span class="label-hint">Nếu đặt, người dùng phải nhập mật khẩu để có thể xem/điều khiển bot.</span>
+                                <div class="password-input-container" style="position: relative; display: flex; align-items: center; width: 100%;">
+                                    <input type="password" id="bot-password" placeholder="Để trống nếu không muốn đặt mật khẩu" style="width: 100%; padding-right: 2.5rem;">
+                                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('bot-password', this)" style="position: absolute; right: 10px; background: transparent; border: none; color: var(--color-text-muted); cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; height: 100%; width: 30px; outline: none; z-index: 10;">
+                                        <i class="fa-solid fa-eye-slash"></i>
+                                    </button>
+                                </div>
+                                <div id="delete-password-container" style="display: none; align-items: center; gap: 0.5rem; margin-top: 0.5rem; font-size: 0.85rem; color: var(--color-danger);">
+                                    <input type="checkbox" id="bot-clear-password" style="cursor: pointer; width: auto; margin: 0; transform: scale(1.1);">
+                                    <label for="bot-clear-password" style="cursor: pointer; font-weight: 500; display: inline-block; color: #f87171;">Gỡ bỏ mật khẩu hiện tại (Xóa mật khẩu)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row-double">
+                            <div class="form-group">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <label for="bot-env">Cấu hình Môi trường (File <code>.env</code>)</label>
+                                    <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; cursor: pointer; color: var(--color-text-muted);">
+                                        <input type="checkbox" id="bot-use-env" checked style="cursor: pointer;"> Kích hoạt
+                                    </label>
+                                </div>
+                                <span class="label-hint">Lưu ý: Mỗi dòng là một cặp KEY=VALUE (Ví dụ: DISCORD_TOKEN=...)</span>
+                                <textarea id="bot-env" class="code-font" rows="5" placeholder="DISCORD_TOKEN=your_token_here&#10;PREFIX=!&#10;DB_HOST=localhost"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="bot-requirements">Thư viện cài thêm (File <code>requirements.txt</code>)</label>
+                                <span class="label-hint">Mỗi dòng một thư viện (Ví dụ: <code>discord.py==2.3.2</code> hoặc <code>requests</code>)</span>
+                                <textarea id="bot-requirements" class="code-font" rows="5" placeholder="discord.py==2.3.2&#10;requests&#10;yt-dlp"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="btn-form-cancel">Hủy bỏ</button>
+                            <button type="submit" class="btn btn-primary" id="btn-form-submit">Lưu Bot & Khởi tạo Môi trường</button>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <span id="toast-message">Thông báo ở đây.</span>
+    </div>
+
+    <!-- MODAL SOẠN THẢO FILE -->
+    <div id="file-editor-modal" class="modal">
+        <div class="modal-content file-editor-content">
+            <div class="modal-header">
+                <h3 id="file-editor-title">Đang chỉnh sửa: filename.py</h3>
+                <button class="btn-close" id="btn-close-editor">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <textarea id="file-editor-textarea" class="code-font" style="width: 100%; height: 500px; border: none; padding: 1rem; background: #181a1f; color: #abb2bf; resize: vertical; outline: none; font-size: 0.9rem; line-height: 1.5; font-family: 'Fira Code', 'Courier New', Courier, monospace;"></textarea>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-top: 1px solid var(--color-border);">
+                <span id="file-editor-status" style="font-size: 0.85rem; color: var(--color-text-muted);"></span>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-secondary" id="btn-file-editor-cancel">Hủy</button>
+                    <button class="btn btn-primary" id="btn-file-editor-save"><i class="fa-solid fa-floppy-disk"></i> Lưu Thay Đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL XÁC MINH MẬT KHẨU BOT -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px; margin-top: 15vh;">
+            <div class="modal-header">
+                <h3>🔐 Yêu Cầu Mật Khẩu</h3>
+            </div>
+            <div class="modal-body" style="padding: 1.5rem 0;">
+                <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-text-muted);">Bot này đã được bảo vệ. Vui lòng nhập mật khẩu để truy cập.</p>
+                <div class="form-group">
+                    <div class="password-input-container" style="position: relative; display: flex; align-items: center; width: 100%;">
+                        <input type="password" id="confirm-bot-password" placeholder="Nhập mật khẩu truy cập..." style="width: 100%; padding-right: 2.5rem;">
+                        <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('confirm-bot-password', this)" style="position: absolute; right: 10px; background: transparent; border: none; color: var(--color-text-muted); cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; height: 100%; width: 30px; outline: none; z-index: 10;">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                <button class="btn btn-secondary btn-sm" id="btn-password-cancel">Hủy</button>
+                <button class="btn btn-primary btn-sm" id="btn-password-submit">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Move File(s) Modal -->
+    <div id="move-modal" class="modal">
+        <div class="modal-content" style="max-width: 550px; background: #0b0f19; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); overflow: hidden;">
+            <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="display: flex; align-items: center; gap: 0.6rem; font-size: 1.1rem; color: #f3f4f6; font-weight: 600; margin: 0;">
+                    <i class="fa-solid fa-folder-open" style="color: #6366f1;"></i> Move File(s)
+                </h3>
+                <button type="button" class="btn-close-modal" id="btn-close-move-modal" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: #9ca3af; cursor: pointer; font-size: 1.2rem; transition: 0.2s;">&times;</button>
+            </div>
+            
+            <div class="modal-body" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem;">
+                <!-- Hộp điều hướng cây thư mục -->
+                <div style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <!-- Header điều hướng: Nút lên thư mục cha & Breadcrumbs -->
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <button type="button" id="btn-move-up" class="btn btn-secondary" style="padding: 0.45rem 0.75rem; border-radius: 8px; min-width: auto; height: 36px;" title="Thư mục cha">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </button>
+                        <div id="move-breadcrumbs" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: #9ca3af; overflow-x: auto; white-space: nowrap; flex: 1;">
+                            <!-- Breadcrumbs của modal di chuyển sẽ render ở đây -->
+                        </div>
+                    </div>
+                    
+                    <!-- Danh sách thư mục con -->
+                    <div id="move-dir-list" style="max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.25rem; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 0.5rem;">
+                        <!-- Danh sách thư mục con sẽ render ở đây -->
+                    </div>
+                </div>
+                
+                <!-- Thông tin vị trí đích mới -->
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <span style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Moving Into</span>
+                    <div id="move-target-path-display" style="background: rgba(0, 0, 0, 0.3); padding: 0.6rem 1rem; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 0.8rem; color: #9ca3af; border: 1px solid rgba(255, 255, 255, 0.03); word-break: break-all;">
+                        /
+                    </div>
+                    
+                    <!-- Preview di chuyển -->
+                    <div id="move-preview-list" style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.25rem; max-height: 120px; overflow-y: auto; padding-right: 0.25rem;">
+                        <!-- Danh sách file preview di chuyển sẽ render ở đây -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 0.75rem; padding: 1.2rem 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08); background: rgba(0, 0, 0, 0.1);">
+                <button type="button" class="btn btn-secondary" id="btn-move-cancel" style="border-radius: 8px; padding: 0.5rem 1.2rem; font-size: 0.85rem; font-weight: 500;">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-move-submit" style="border-radius: 8px; padding: 0.5rem 1.2rem; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; background: #6366f1; border-color: #6366f1;">
+                    <i class="fa-solid fa-folder-open"></i> Move Here
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js?v=1.0.30"></script>
+</body>
+</html>

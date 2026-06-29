@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập - AegisBot Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --color-primary: #6366f1;
+            --color-primary-hover: #4f46e5;
+            --color-text-main: #f3f4f6;
+            --color-text-muted: #9ca3af;
+            --color-danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--color-text-main);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Hiệu ứng vòng tròn phát sáng nền */
+        .bg-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            top: -100px;
+            right: -100px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            bottom: -150px;
+            left: -150px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem 2rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand-logo {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.6rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--color-text-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+
+        .password-toggle:hover {
+            color: var(--color-text-main);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--color-primary);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            background: var(--color-primary-hover);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-submit:disabled {
+            background: rgba(99, 102, 241, 0.5);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 1.25rem;
+            display: none;
+            align-items: flex-start;
+            gap: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="login-container">
+        <div class="brand-header">
+            <div class="brand-logo"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="brand-title">AegisBot Manager</div>
+            <div class="brand-subtitle">Hệ thống quản lý bot bảo mật</div>
+        </div>
+
+        <!-- Khung thông báo lỗi -->
+        <div class="alert alert-danger" id="login-alert">
+            <i class="fa-solid fa-circle-exclamation" style="margin-top: 2px;"></i>
+            <span id="alert-text">Tên đăng nhập/Email hoặc mật khẩu không chính xác.</span>
+        </div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label class="form-label" for="username_or_email">Tên đăng nhập hoặc Email</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="username_or_email" class="form-control" placeholder="Nhập tên đăng nhập hoặc email..." required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Mật khẩu hệ thống</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu..." required autocomplete="current-password">
+                    <button type="button" class="password-toggle" id="btn-toggle-password" title="Hiện mật khẩu">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="btn-submit">
+                <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const elForm = document.getElementById('login-form');
+        const elIdentifier = document.getElementById('username_or_email');
+        const elPassword = document.getElementById('password');
+        const elBtnToggle = document.getElementById('btn-toggle-password');
+        const elBtnSubmit = document.getElementById('btn-submit');
+        const elAlert = document.getElementById('login-alert');
+        const elAlertText = document.getElementById('alert-text');
+
+        // Hiện/ẩn mật khẩu
+        elBtnToggle.addEventListener('click', () => {
+            const isPassword = elPassword.type === 'password';
+            elPassword.type = isPassword ? 'text' : 'password';
+            elBtnToggle.innerHTML = isPassword ? '<i class="fa-regular fa-eye"></i>' : '<i class="fa-regular fa-eye-slash"></i>';
+            elBtnToggle.title = isPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu';
+        });
+
+        function showAlert(message) {
+            elAlertText.textContent = message;
+            elAlert.style.display = 'flex';
+        }
+
+        function hideAlert() {
+            elAlert.style.display = 'none';
+        }
+
+        // Xử lý đăng nhập bằng tên đăng nhập/email + mật khẩu
+        elForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideAlert();
+
+            const identifierVal = elIdentifier.value.trim();
+            const passwordVal = elPassword.value;
+            if (!identifierVal || !passwordVal) return;
+
+            elBtnSubmit.disabled = true;
+            elBtnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang đăng nhập...';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username_or_email: identifierVal, password: passwordVal })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Chuyển hướng về trang chủ quản lý
+                    window.location.href = '/';
+                } else {
+                    showAlert(data.detail || 'Đăng nhập thất bại.');
+                }
+            } catch (error) {
+                showAlert('Lỗi kết nối máy chủ. Vui lòng thử lại sau.');
+            } finally {
+                elBtnSubmit.disabled = false;
+                elBtnSubmit.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập';
+            }
+        });
+    </script>
+</body>
+</html>
